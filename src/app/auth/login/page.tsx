@@ -1,11 +1,18 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import React from "react";
+import React, { useState } from "react";
 
 export default function SignInPage() {
-    const handleSignIn = () => {
-        signIn("google");
+    const [message, setMessage] = useState("");
+
+    const handleSignIn = async () => {
+        try {
+            await signIn("google");
+            setMessage("Sign-in successful!");
+        } catch (error) {
+            setMessage("Sign-in failed. Please try again.");
+        }
     };
 
     return (
@@ -18,6 +25,7 @@ export default function SignInPage() {
                 >
                     Sign in with Google
                 </button>
+                {message && <p className="text-center text-green-600 mt-4">{message}</p>}
             </div>
         </div>
     );
